@@ -1,0 +1,22 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("COMMAND_SERVER_DATABASE_URL")
+}
+
+model post {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  author_name String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  deleted     Boolean  @default(false)
+}
