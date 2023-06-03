@@ -3,7 +3,7 @@
 ### Description
 
 **Event Stream**\
-Because the queues managed by bulljs are an event method, a common function created to register events for each event queue generated or to handle business logic
+This is a common function created to register events for each event queue managed by bull.js and handle the received business logic.
 
 ```typescript
 export const EventHandlerByDomain = async (
