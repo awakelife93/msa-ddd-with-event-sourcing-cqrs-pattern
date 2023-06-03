@@ -13,12 +13,12 @@ export const EventHandlerByDomain = async (
     const domain = Object.keys(eventQueuesByDomain);
 
     for (const domainName of domain) {
-        const EventQueues: Bull.Queue[] = Object.values(
-            eventQueuesByDomain[domainName]
+        const EventQueues: (Bull.Queue | undefined)[] = Object.values(
+            eventQueuesByDomain[domainName] ?? {}
         );
 
         for await (const EventQueue of EventQueues) {
-            await EventHandler(EventQueue);
+            if (EventQueue) await EventHandler(EventQueue);
         }
     }
 };
