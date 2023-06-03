@@ -25,7 +25,7 @@ This project is based on the MSA + DDD architecture + CQRS pattern.\
 
 ### `Architecture`
 
-![Architecture](https://github.com/awakelife93/easy-vscode-extensions-data-generator/assets/20429356/e86747c2-d250-44f7-a27a-9aa50187bf4d)
+![Architecture](https://github.com/awakelife93/msa-ddd-with-cqrs-pattern/assets/20429356/5a12c9fb-4c96-47c7-8f2e-927e478e1ee4)
 
 ### Description
 
