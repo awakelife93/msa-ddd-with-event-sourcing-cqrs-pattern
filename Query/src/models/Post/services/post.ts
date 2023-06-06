@@ -29,8 +29,16 @@ export const GetPostService = async (
     getPostRequestDTO: GetPostRequestDTO
 ): Promise<GetPostResponseDTO> => {
     const { id, title, content, author_name } = getPostRequestDTO;
+
+    const queries = generateFilterQuery<IPost>({
+        id,
+        title,
+        content,
+        author_name
+    });
+
     const post = await PostModel.findOne({
-        $or: [{ id }, { title }, { content }, { author_name }]
+        $or: queries
     });
 
     if (!post) {

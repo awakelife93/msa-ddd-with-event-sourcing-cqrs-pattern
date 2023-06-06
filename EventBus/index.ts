@@ -117,9 +117,7 @@ const eventQueueHealthHandler = async (): Promise<void> => {
  */
 const printFailedJobs = async (): Promise<void> => {
     const failedJobs = await getFailedJobs();
-
     console.log("========= Failed Jobs =========");
-    if (failedJobs.length === 0) console.log("Failed Jobs Empty");
     failedJobs.forEach((failedJob) => {
         printFailedJob(failedJob);
     });
@@ -152,7 +150,7 @@ const removeFailedJob = async ({
 }: {
     jobId?: string;
     cleanupFailures: boolean;
-}) => {
+}): Promise<void> => {
     const failedJobs = await getFailedJobs();
 
     for (const failedJob of failedJobs) {
