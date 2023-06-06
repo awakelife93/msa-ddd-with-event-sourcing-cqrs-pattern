@@ -3,6 +3,7 @@ import {
     CommonStatusCode,
     CommonStatusMessage
 } from "../../../../../common/status";
+import { validateDTO } from "../../../utils/validator";
 import CreatePostRequestDTO from "../dtos/CreatePostRequestDTO";
 import CreatePostResponseDTO from "../dtos/CreatePostResponseDTO";
 import DeletePostResponseDTO from "../dtos/DeletePostResponseDTO";
@@ -18,7 +19,11 @@ export const CreatePostController = async (
     request: express.Request
 ): Promise<CreatePostResponseDTO> => {
     return new CreatePostResponseDTO(
-        await CreatePostService(new CreatePostRequestDTO(request.body))
+        await CreatePostService(
+            validateDTO(new CreatePostRequestDTO(request.body), {
+                message: "The CreatePostController Dto is abnormal."
+            })
+        )
     );
 };
 
@@ -37,7 +42,15 @@ export const UpdatePostController = async (
     return new UpdatePostResponseDTO(
         await UpdatePostService(
             Number(postId),
-            new UpdatePostRequestDTO(request.body)
+            validateDTO(
+                new UpdatePostRequestDTO(request.body),
+                {
+                    message: "The UpdatePostController Dto is abnormal."
+                },
+                {
+                    skipFields: ["author_name", "content", "title"]
+                }
+            )
         )
     );
 };
