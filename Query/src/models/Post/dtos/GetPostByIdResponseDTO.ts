@@ -2,7 +2,7 @@ import { ObjectId } from "mongoose";
 
 class GetPostByIdResponseDTO {
     _id: ObjectId;
-    id: string;
+    post_id: number;
     title: string;
     content: string;
     author_name: string;
@@ -12,7 +12,7 @@ class GetPostByIdResponseDTO {
 
     constructor({
         _id,
-        id,
+        post_id,
         title,
         content,
         author_name,
@@ -21,7 +21,7 @@ class GetPostByIdResponseDTO {
         deleted
     }: {
         _id: ObjectId;
-        id: string;
+        post_id: number;
         title: string;
         content: string;
         author_name: string;
@@ -30,7 +30,7 @@ class GetPostByIdResponseDTO {
         deleted: boolean;
     }) {
         this._id = _id;
-        this.id = id;
+        this.post_id = post_id;
         this.title = title;
         this.content = content;
         this.author_name = author_name;

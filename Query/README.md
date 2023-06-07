@@ -29,27 +29,42 @@ PostSchema.pre("findOne", function () {
 It is in charge of synchronizing to MongoDB according to the domain, entity, and CUD type delivered to the subscription section in Event Bus.
 
 ```typescript
-type SelectCollectionModel = typeof PostModel;
+/**
+ * @description
+ * In the Event Sourcing pattern, any unnecessary entities held by the Command Server are excluded.
+ */
+export const excludeFieldsHelper = (entity: any, excludeFields: string[]) => {
+    const _entity = { ...entity };
 
-const selectCollection = (
-    domainName: string
-): SelectCollectionModel | undefined => {
-    return {
-        [Domain.POST]: PostModel
-    }[domainName];
+    excludeFields.forEach((excludeField) => {
+        delete _entity[excludeField];
+    });
+
+    return _entity;
 };
+
+type SelectCollectionModel = typeof PostModel;
 
 const selectCudAction = (cudAction: CudAction) => {
     const cudActions = {
-        CREATE: async (Collection: SelectCollectionModel, entity: unknown) => {
-            const document = new Collection(entity);
+        CREATE: async (Collection: SelectCollectionModel, entity: any) => {
+            const document = new Collection({
+                ...entity,
+                updated_at: entity.created_at
+            });
             await document.save();
         },
         UPDATE: async (Collection: SelectCollectionModel, entity: any) => {
-            await Collection.updateOne({ id: entity.id }, { ...entity });
+            await Collection.updateOne(
+                { post_id: entity.post_id },
+                { ...excludeDateField(entity), updated_at: new Date() }
+            );
         },
         DELETE: async (Collection: SelectCollectionModel, entity: any) => {
-            await Collection.updateOne({ id: entity.id }, { deleted: true });
+            await Collection.updateOne(
+                { post_id: entity.post_id },
+                { ...excludeDateField(entity), updated_at: new Date() }
+            );
         }
     };
 

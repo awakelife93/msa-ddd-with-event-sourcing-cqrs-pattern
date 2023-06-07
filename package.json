@@ -1,19 +1,19 @@
 {
-    "name": "msa-ddd-with-cqrs-pattern",
+    "name": "msa-ddd-with-event-sourcing-cqrs-pattern",
     "private": true,
     "version": "1.0.0",
-    "description": "This project is based on the MSA + DDD architecture + CQRS pattern.",
+    "description": "This project is based on the MSA + DDD architecture + Event Sourcing + CQRS pattern.",
     "scripts": {
         "start": "ts-node ./index.ts"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/awakelife93/msa-ddd-with-cqrs-pattern.git"
+        "url": "git+https://github.com/awakelife93/msa-ddd-with-event-sourcing-cqrs-pattern.git"
     },
     "bugs": {
-        "url": "https://github.com/awakelife93/msa-ddd-with-cqrs-pattern/issues"
+        "url": "https://github.com/awakelife93/msa-ddd-with-event-sourcing-cqrs-pattern/issues"
     },
-    "homepage": "https://github.com/awakelife93/msa-ddd-with-cqrs-pattern#readme",
+    "homepage": "https://github.com/awakelife93/msa-ddd-with-event-sourcing-cqrs-pattern#readme",
     "keywords": [
         "nodejs",
         "node",
@@ -24,6 +24,10 @@
         "Domain Driven Design",
         "cqrs",
         "cqrs pattern",
+        "eventsourcing",
+        "event-sourcing",
+        "event sourcing",
+        "event sourcing pattern",
         "prisma",
         "mongoose",
         "redis",

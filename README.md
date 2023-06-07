@@ -1,10 +1,10 @@
-# Welcome :smiley:
+# Welcome :wave:
 
-## msa-ddd-with-cqrs-pattern
+## msa-ddd-with-event-sourcing-cqrs-pattern
 
-### Example Microservice + DDD + CQRS pattern
+### Example Microservice + DDD + Event Sourcing + CQRS pattern :smiley:
 
-This project is based on the MSA + DDD architecture + CQRS pattern.\
+This project is based on the MSA + DDD architecture + Event Sourcing + CQRS pattern.\
 `The RDBMS used in the example is MySQL, and NoSQL is MongoDB. And Redis is used as the message queue (MQ). Depending on the situation, you can choose various RDBMS and attach a search-optimized DB (e.g., ELK, Neo4j...) to the query server.`
 
 ### Getting Started
@@ -25,7 +25,7 @@ This project is based on the MSA + DDD architecture + CQRS pattern.\
 
 ### `Architecture`
 
-![Architecture](https://github.com/awakelife93/msa-ddd-with-cqrs-pattern/assets/20429356/5a12c9fb-4c96-47c7-8f2e-927e478e1ee4)
+![Architecture](https://github.com/awakelife93/msa-ddd-with-cqrs-pattern/assets/20429356/95f86e2d-3c1c-44a0-a25b-bc0e161c6a4c)
 
 ### Description
 
@@ -33,17 +33,18 @@ This project is based on the MSA + DDD architecture + CQRS pattern.\
 
 `This project used Mysql, Mongoose, and Redis, so please check the server environments.`
 
-1. `Open Command (CUD) Server, Query (R) Server`\
+1. **In the Event Sourcing pattern, all changes to an object are stored in the Command Server, and only the final data is stored in the Query Server.**
+2. `Open Command (CUD) Server, Query (R) Server`\
    1-1. Server separation based on request objectives by micro-service architecture\
    1-2. Command Server only accepts requests for Create, Update, and Delete.\
    1-3. Query Server only accepts Read requests.
-2. `If the operation of data at the service layer of the command server is finished, EventBus adds the entity to the Event Queue operation.`\
+3. `If the operation of data at the service layer of the command server is finished, EventBus adds the entity to the Event Queue operation.`\
    2-1. If data manipulation fails or fails during the event bus process, the working entity on the command server is rolled back.\
    2-2. If the event operation fails, retry 3 times.\
    2-3. If the operation fails three times, it will remain in the queue as a failed operation, and if the cause is unknown or unresolved in the runtime environment, the data synchronization between the command server and the query server will not match.
-3. `The event bus is in charge of collectively reflecting the loaded tasks of the event queue to the Mongodb of the Query server.`
-4. `The event bus detects its own state and processes logic accordingly.`
-5. `This mechanism enables thorough role separation by separating the database of the command server and the query server.`
+4. `The event bus is in charge of collectively reflecting the loaded tasks of the event queue to the Mongodb of the Query server.`
+5. `The event bus detects its own state and processes logic accordingly.`
+6. `This mechanism enables thorough role separation by separating the database of the command server and the query server.`
 
 ### Project Guide
 
@@ -77,39 +78,39 @@ This project is based on the MSA + DDD architecture + CQRS pattern.\
 ============== BeginTransaction Start ==============
 ============== EventBus Publisher Work Start ==============
 DOMAIN NAME: Post
-ENTITY: {"id":49,"title":"Demo Post","content":"hi~","author_name":"awakelife93","created_at":"2023-06-02T01:24:57.447Z","updated_at":"2023-06-02T01:24:57.447Z","deleted":false}
+ENTITY: {"id":77,"post_id":3,"version":1,"title":"Demo Post","content":"hi~","author_name":"awakelife93","created_at":"2023-06-07T02:57:47.312Z","deleted":false}
 CUD_ACTION: CREATE
 ============== EventBus Publisher Work End ==============
 ============== BeginTransaction Commit ==============
 ============== EventBus SubScriber Work Start ==============
 DOMAIN NAME: Post
-ENTITY: {"id":49,"title":"Demo Post","content":"hi~","author_name":"awakelife93","created_at":"2023-06-02T01:24:57.447Z","updated_at":"2023-06-02T01:24:57.447Z","deleted":false}
+ENTITY: {"id":77,"post_id":3,"version":1,"title":"Demo Post","content":"hi~","author_name":"awakelife93","created_at":"2023-06-07T02:57:47.312Z","deleted":false}
 CUD_ACTION: CREATE
 ============== QueryEntityHandler Work Start ==============
 DOMAIN NAME: Post
-ENTITY: {"id":49,"title":"Demo Post","content":"hi~","author_name":"awakelife93","created_at":"2023-06-02T01:24:57.447Z","updated_at":"2023-06-02T01:24:57.447Z","deleted":false}
+ENTITY: {"id":77,"post_id":3,"version":1,"title":"Demo Post","content":"hi~","author_name":"awakelife93","created_at":"2023-06-07T02:57:47.312Z","deleted":false}
 CUD_ACTION: CREATE
 ============== QueryEntityHandler Work End ==============
 ============== EventBus SubScriber Work End ==============
-========= Completed Job ID: 62 =========
+========= Completed Job ID: 77 =========
 
 // RDBMS Output
--------------------------------------------------------------------------------------------------------------------
-| id |   title     | content |          created_at        |           updated_at        | deleted |  author_name  |
--------------------------------------------------------------------------------------------------------------------
-| 49 | Demo Post   |   hi~   |  2023-06-02 01:24:57.447   |     2023-06-02 01:24:57.447 |    0    |  awakelife93  |
--------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+| id |   title     | content |          created_at        |  deleted  |  author_name  | post_id |    version   |
+----------------------------------------------------------------------------------------------------------------
+| 77 |  Demo Post  |   hi~   |  2023-06-07 02:57:47.312   |     0     |  awakelife93  |    3    |       1      |
+----------------------------------------------------------------------------------------------------------------
 // NoSQL Output
 {
   "_id": {
-    "$oid": "647944e933912fd6411a924b"
+    "$oid": "647ff22bfd8de16a991d886f"
   },
-  "id": "49",
+  "post_id": "3",
   "created_at": {
-    "$date": "2023-06-02T01:24:57.447Z"
+    "$date": "2023-06-07T02:57:47.312Z"
   },
   "updated_at": {
-    "$date": "2023-06-02T01:24:57.447Z"
+    "$date": "2023-06-07T02:57:47.312Z"
   },
   "title": "Demo Post",
   "content": "hi~",
@@ -125,7 +126,7 @@ CUD_ACTION: CREATE
 
 ```typescript
 // Sample Request Endpoint & Parameter
-// PATCH http://localhost:3000/post/49
+// PATCH http://localhost:3000/post/3
 {
     "title": "Update Demo Post",
     "content": "HI~",
@@ -136,42 +137,44 @@ CUD_ACTION: CREATE
 ============== BeginTransaction Start ==============
 ============== EventBus Publisher Work Start ==============
 DOMAIN NAME: Post
-ENTITY: {"id":49,"title":"Update Demo","content":"HI~","author_name":"awakelife93","created_at":"2023-06-02T01:24:57.447Z","updated_at":"2023-06-02T01:26:47.368Z","deleted":false}
+ENTITY: {"id":79,"post_id":3,"version":2,"title":"Update Demo Post","content":"HI~","author_name":"awakelife93","created_at":"2023-06-07T03:03:23.988Z","deleted":false}
 CUD_ACTION: UPDATE
 ============== EventBus Publisher Work End ==============
 ============== BeginTransaction Commit ==============
 ============== EventBus SubScriber Work Start ==============
 DOMAIN NAME: Post
-ENTITY: {"id":49,"title":"Update Demo","content":"HI~","author_name":"awakelife93","created_at":"2023-06-02T01:24:57.447Z","updated_at":"2023-06-02T01:26:47.368Z","deleted":false}
+ENTITY: {"id":79,"post_id":3,"version":2,"title":"Update Demo Post","content":"HI~","author_name":"awakelife93","created_at":"2023-06-07T03:03:23.988Z","deleted":false}
 CUD_ACTION: UPDATE
 ============== QueryEntityHandler Work Start ==============
 DOMAIN NAME: Post
-ENTITY: {"id":49,"title":"Update Demo","content":"HI~","author_name":"awakelife93","created_at":"2023-06-02T01:24:57.447Z","updated_at":"2023-06-02T01:26:47.368Z","deleted":false}
+ENTITY: {"id":79,"post_id":3,"version":2,"title":"Update Demo Post","content":"HI~","author_name":"awakelife93","created_at":"2023-06-07T03:03:23.988Z","deleted":false}
 CUD_ACTION: UPDATE
 ============== QueryEntityHandler Work End ==============
 ============== EventBus SubScriber Work End ==============
-========= Completed Job ID: 9 =========
+========= Completed Job ID: 26 =========
 
 // RDBMS Output
--------------------------------------------------------------------------------------------------------------------
-| id |   title     | content |          created_at        |           updated_at        | deleted |  author_name  |
--------------------------------------------------------------------------------------------------------------------
-| 49 | Update Demo |   HI~   |  2023-06-02 01:24:57.447   |     2023-06-02 01:26:47.368 |    0    |  awakelife93  |
--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+| id |        title       | content |          created_at        |  deleted  |  author_name  | post_id |  version  |
+--------------------------------------------------------------------------------------------------------------------
+| 77 |      Demo Post     |   hi~   |  2023-06-07 02:57:47.312   |     0     |  awakelife93  |    3    |     1     |
+--------------------------------------------------------------------------------------------------------------------
+| 78 |  Update Demo Post  |   HI~   |  2023-06-07 03:03:23.988   |     0     |  awakelife93  |    3    |     2     |
+--------------------------------------------------------------------------------------------------------------------
 
 // NoSQL Output
 {
   "_id": {
-    "$oid": "647944e933912fd6411a924b"
+    "$oid": "647ff22bfd8de16a991d886f"
   },
-  "id": "49",
+  "post_id": "3",
   "created_at": {
-    "$date": "2023-06-02T01:24:57.447Z"
+    "$date": "2023-06-07T02:57:47.312Z"
   },
   "updated_at": {
-    "$date": "2023-06-02T01:26:47.368Z"
+    "$date": "2023-06-07T03:03:24.007Z"
   },
-  "title": "Update Demo",
+  "title": "Update Demo Post",
   "content": "HI~",
   "author_name": "awakelife93",
   "deleted": false,
@@ -185,48 +188,52 @@ CUD_ACTION: UPDATE
 
 ```typescript
 // Sample Request Endpoint & Parameter
-// DELETE http://localhost:3000/post/49
+// DELETE http://localhost:3000/post/3
 
 // Log Trace
 ============== BeginTransaction Start ==============
 ============== EventBus Publisher Work Start ==============
 DOMAIN NAME: Post
-ENTITY: {"id":49,"title":"Update Demo","content":"HI~","author_name":"awakelife93","created_at":"2023-06-02T01:24:57.447Z","updated_at":"2023-06-02T01:29:26.846Z","deleted":true}
+ENTITY: {"id":80,"post_id":3,"version":3,"title":"Update Demo Post","content":"HI~","author_name":"awakelife93","created_at":"2023-06-07T03:08:07.161Z","deleted":true}
 CUD_ACTION: DELETE
 ============== EventBus Publisher Work End ==============
 ============== BeginTransaction Commit ==============
 ============== EventBus SubScriber Work Start ==============
 DOMAIN NAME: Post
-ENTITY: {"id":49,"title":"Update Demo","content":"HI~","author_name":"awakelife93","created_at":"2023-06-02T01:24:57.447Z","updated_at":"2023-06-02T01:29:26.846Z","deleted":true}
+ENTITY: {"id":80,"post_id":3,"version":3,"title":"Update Demo Post","content":"HI~","author_name":"awakelife93","created_at":"2023-06-07T03:08:07.161Z","deleted":true}
 CUD_ACTION: DELETE
 ============== QueryEntityHandler Work Start ==============
 DOMAIN NAME: Post
-ENTITY: {"id":49,"title":"Update Demo","content":"HI~","author_name":"awakelife93","created_at":"2023-06-02T01:24:57.447Z","updated_at":"2023-06-02T01:29:26.846Z","deleted":true}
+ENTITY: {"id":80,"post_id":3,"version":3,"title":"Update Demo Post","content":"HI~","author_name":"awakelife93","created_at":"2023-06-07T03:08:07.161Z","deleted":true}
 CUD_ACTION: DELETE
 ============== QueryEntityHandler Work End ==============
 ============== EventBus SubScriber Work End ==============
-========= Completed Job ID: 2 =========
+========= Completed Job ID: 9 =========
 
 // RDBMS Output
--------------------------------------------------------------------------------------------------------------------
-| id |   title     | content |          created_at        |           updated_at        | deleted |  author_name  |
--------------------------------------------------------------------------------------------------------------------
-| 49 | Update Demo |   HI~   |  2023-06-02 01:24:57.447   |     2023-06-02 01:29:26.846 |    1    |  awakelife93  |
--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+| id |        title       | content |          created_at        |  deleted  |  author_name  | post_id |  version  |
+--------------------------------------------------------------------------------------------------------------------
+| 77 |      Demo Post     |   hi~   |  2023-06-07 02:57:47.312   |     0     |  awakelife93  |    3    |     1     |
+--------------------------------------------------------------------------------------------------------------------
+| 78 |  Update Demo Post  |   HI~   |  2023-06-07 03:03:23.988   |     0     |  awakelife93  |    3    |     2     |
+--------------------------------------------------------------------------------------------------------------------
+| 79 |  Update Demo Post  |   HI~   |  2023-06-07 03:08:07.161   |     1     |  awakelife93  |    3    |     3     |
+--------------------------------------------------------------------------------------------------------------------
 
 // NoSQL Output
 {
   "_id": {
-    "$oid": "647944e933912fd6411a924b"
+    "$oid": "647ff22bfd8de16a991d886f"
   },
-  "id": "49",
+  "post_id": "3",
   "created_at": {
-    "$date": "2023-06-02T01:24:57.447Z"
+    "$date": "2023-06-07T02:57:47.312Z"
   },
   "updated_at": {
-    "$date": "2023-06-02T01:26:47.368Z"
+    "$date": "2023-06-07T03:08:07.178Z"
   },
-  "title": "Update Demo",
+  "title": "Update Demo Post",
   "content": "HI~",
   "author_name": "awakelife93",
   "deleted": true,
@@ -240,17 +247,17 @@ CUD_ACTION: DELETE
 
 ```typescript
 // Sample Request Endpoint & Parameter
-// GET http://localhost:4000/post/49
+// GET http://localhost:4000/post/3
 
 {
     "data": {
-        "_id": "647944e933912fd6411a924b",
-        "id": "49",
-        "title": "Update Demo",
+        "_id": "647ff22bfd8de16a991d886f",
+        "post_id": 3,
+        "title": "Update Demo Post",
         "content": "HI~",
         "author_name": "awakelife93",
-        "created_at": "2023-06-02T01:24:57.447Z",
-        "updated_at": "2023-06-02T01:26:47.368Z",
+        "created_at": "2023-06-07T02:57:47.312Z",
+        "updated_at": "2023-06-07T03:08:07.178Z",
         "deleted": false
     }
 }
@@ -266,19 +273,20 @@ const Domain = {
 
 // Prisma
 model post {
-  id         Int      @id @default(autoincrement())
-  title      String
-  content    String
+  id          Int      @id @default(autoincrement())
+  post_id     Int
+  version     Int
+  title       String
+  content     String
   author_name String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  deleted    Boolean  @default(false)
+  created_at  DateTime @default(now())
+  deleted     Boolean  @default(false)
 }
 
 // Mongoose
 const PostSchema = new mongoose.Schema<IPost>({
-    id: {
-        type: String,
+    post_id: {
+        type: Number,
         required: true,
         unique: true
     },

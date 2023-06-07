@@ -20,3 +20,17 @@ export const generateFilterQuery = <T>(
 
     return [{}];
 };
+
+/**
+ * @description
+ * In the Event Sourcing pattern, any unnecessary entities held by the Command Server are excluded.
+ */
+export const excludeFieldsHelper = (entity: any, excludeFields: string[]) => {
+    const _entity = { ...entity };
+
+    excludeFields.forEach((excludeField) => {
+        delete _entity[excludeField];
+    });
+
+    return _entity;
+};

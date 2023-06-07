@@ -11,9 +11,9 @@ import GetPostRequestDTO from "../dtos/GetPostRequestDTO";
 import GetPostResponseDTO from "../dtos/GetPostResponseDTO";
 
 export const GetPostByIdService = async (
-    id: number
+    post_id: number
 ): Promise<GetPostByIdResponseDTO> => {
-    const post = await PostModel.findOne({ id });
+    const post = await PostModel.findOne({ post_id });
 
     if (!post) {
         throw {
@@ -28,10 +28,10 @@ export const GetPostByIdService = async (
 export const GetPostService = async (
     getPostRequestDTO: GetPostRequestDTO
 ): Promise<GetPostResponseDTO> => {
-    const { id, title, content, author_name } = getPostRequestDTO;
+    const { post_id, title, content, author_name } = getPostRequestDTO;
 
     const queries = generateFilterQuery<IPost>({
-        id,
+        post_id,
         title,
         content,
         author_name
@@ -54,10 +54,10 @@ export const GetPostService = async (
 export const GetAllPostService = async (
     getAllPostRequestDTO: GetAllPostRequestDTO
 ): Promise<GetPostResponseDTO[]> => {
-    const { id, title, content, author_name } = getAllPostRequestDTO;
+    const { post_id, title, content, author_name } = getAllPostRequestDTO;
 
     const queries = generateFilterQuery<IPost>({
-        id,
+        post_id,
         title,
         content,
         author_name

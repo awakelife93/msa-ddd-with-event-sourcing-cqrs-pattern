@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export interface IPost {
-    id: string;
+    post_id: number;
     created_at: Date;
     updated_at: Date;
     title: string;
@@ -11,8 +11,8 @@ export interface IPost {
 }
 
 const PostSchema = new mongoose.Schema<IPost>({
-    id: {
-        type: String,
+    post_id: {
+        type: Number,
         required: true,
         unique: true
     },

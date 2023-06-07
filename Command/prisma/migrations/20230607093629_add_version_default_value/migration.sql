@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `post` MODIFY `version` INTEGER NOT NULL DEFAULT 1;

@@ -3,6 +3,7 @@ import { printWorkJob } from "../../../../EventBus/helpers";
 import { ErrorStatusMessage } from "../../../../common/status";
 import { CudAction, EventHandleParams } from "../../../../common/type";
 import PostModel from "../../../mongoose/models/post";
+import { excludeFieldsHelper } from "../../utils/generate-query";
 
 type SelectCollectionModel = typeof PostModel;
 
@@ -16,15 +17,30 @@ const selectCollection = (
 
 const selectCudAction = (cudAction: CudAction) => {
     const cudActions = {
-        CREATE: async (Collection: SelectCollectionModel, entity: unknown) => {
-            const document = new Collection(entity);
+        CREATE: async (Collection: SelectCollectionModel, entity: any) => {
+            const document = new Collection({
+                ...entity,
+                updated_at: entity.created_at
+            });
             await document.save();
         },
         UPDATE: async (Collection: SelectCollectionModel, entity: any) => {
-            await Collection.updateOne({ id: entity.id }, { ...entity });
+            await Collection.updateOne(
+                { post_id: entity.post_id },
+                {
+                    ...excludeFieldsHelper(entity, ["created_at"]),
+                    updated_at: new Date()
+                }
+            );
         },
         DELETE: async (Collection: SelectCollectionModel, entity: any) => {
-            await Collection.updateOne({ id: entity.id }, { deleted: true });
+            await Collection.updateOne(
+                { post_id: entity.post_id },
+                {
+                    ...excludeFieldsHelper(entity, ["created_at"]),
+                    updated_at: new Date()
+                }
+            );
         }
     };
 

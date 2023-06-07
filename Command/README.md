@@ -69,10 +69,22 @@ export const CreatePostService = async (
     createPostRequestDto: CreatePostRequestDTO
 ): Promise<post> => {
     return await BeginTransaction<Promise<post>>(
-        async (tx) =>
-            await tx.post.create({
-                data: createPostRequestDto
-            }),
+        async (tx) => {
+            const lastPost = await tx.post.findFirst({
+                orderBy: {
+                    post_id: "desc"
+                }
+            });
+
+            return await tx.post.create({
+                data: {
+                    ...createPostRequestDto,
+                    post_id: lastPost ? lastPost.post_id + 1 : 1,
+                    version: 1
+                }
+            });
+        },
+
         {
             domainName: Domain.POST,
             cudAction: CudActionEnum.CREATE

@@ -13,10 +13,11 @@ datasource db {
 
 model post {
   id          Int      @id @default(autoincrement())
+  post_id     Int
+  version     Int      @default(1)
   title       String
   content     String
   author_name String
   created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
   deleted     Boolean  @default(false)
 }
