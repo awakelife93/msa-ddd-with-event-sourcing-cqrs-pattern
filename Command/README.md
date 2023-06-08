@@ -79,12 +79,10 @@ export const CreatePostService = async (
             return await tx.post.create({
                 data: {
                     ...createPostRequestDto,
-                    post_id: lastPost ? lastPost.post_id + 1 : 1,
-                    version: 1
+                    post_id: lastPost ? lastPost.post_id + 1 : 1
                 }
             });
         },
-
         {
             domainName: Domain.POST,
             cudAction: CudActionEnum.CREATE

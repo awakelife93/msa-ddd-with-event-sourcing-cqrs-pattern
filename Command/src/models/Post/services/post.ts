@@ -27,7 +27,6 @@ export const CreatePostService = async (
                 }
             });
         },
-
         {
             domainName: Domain.POST,
             cudAction: CudActionEnum.CREATE
