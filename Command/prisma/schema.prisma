@@ -11,7 +11,7 @@ datasource db {
   url      = env("COMMAND_SERVER_DATABASE_URL")
 }
 
-model post {
+model Post {
   id          Int      @id @default(autoincrement())
   post_id     Int
   version     Int      @default(1)
@@ -20,4 +20,6 @@ model post {
   author_name String
   created_at  DateTime @default(now())
   deleted     Boolean  @default(false)
+
+  @@map("posts")
 }

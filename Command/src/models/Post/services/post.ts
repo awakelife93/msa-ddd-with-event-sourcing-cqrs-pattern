@@ -1,4 +1,4 @@
-import { post } from "@prisma/client";
+import { Post } from "@prisma/client";
 import Domain from "../../../../../Domain";
 import { CudActionEnum } from "../../../../../common/enum";
 import {
@@ -11,8 +11,8 @@ import UpdatePostRequestDTO from "../dtos/UpdatePostRequestDTO";
 
 export const CreatePostService = async (
     createPostRequestDto: CreatePostRequestDTO
-): Promise<post> => {
-    return await BeginTransaction<Promise<post>>(
+): Promise<Post> => {
+    return await BeginTransaction<Promise<Post>>(
         async (tx) => {
             const lastPost = await tx.post.findFirst({
                 orderBy: {
@@ -37,8 +37,8 @@ export const CreatePostService = async (
 export const UpdatePostService = async (
     post_id: number,
     updatePostRequestDto: UpdatePostRequestDTO
-): Promise<post> => {
-    return await BeginTransaction<Promise<post>>(
+): Promise<Post> => {
+    return await BeginTransaction<Promise<Post>>(
         async (tx) => {
             const post = await tx.post.findFirst({
                 orderBy: {
@@ -71,8 +71,8 @@ export const UpdatePostService = async (
     );
 };
 
-export const DeletePostService = async (post_id: number): Promise<post> => {
-    return await BeginTransaction<Promise<post>>(
+export const DeletePostService = async (post_id: number): Promise<Post> => {
+    return await BeginTransaction<Promise<Post>>(
         async (tx) => {
             const post = await tx.post.findFirst({
                 orderBy: {
