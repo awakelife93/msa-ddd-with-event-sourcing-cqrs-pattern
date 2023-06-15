@@ -12,7 +12,7 @@ type MultiEventQueueOption = {
 /**
  * @description
  * singleEventQueueOption = When using a single Redis
- * multiEventQueueOption = If you are isolating Redis for each CUD operation
+ * multiEventQueueOption = If you are isolating Redis for each C, U, D operation
  */
 const queueOptions: {
     singleEventQueueOption: SingleEventQueueOption;

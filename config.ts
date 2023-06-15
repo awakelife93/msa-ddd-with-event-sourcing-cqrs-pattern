@@ -15,7 +15,8 @@ const config = {
         : 3000,
     QUERY_SERVER_PORT: process.env["QUERY_SERVER_PORT"]
         ? Number(process.env["QUERY_SERVER_PORT"])
-        : 4000
+        : 4000,
+    IS_SINGLE_QUEUE: process.env["IS_SINGLE_QUEUE"] ?? true
 };
 
 export default config;
