@@ -40,7 +40,9 @@ export const printJob = (job: Bull.Job) => {
     console.log(`Event Queue Name = ${job.queue.name}`);
     console.log(`Job ID = ${job.id}`);
     console.log(`Job Data = ${JSON.stringify(job.data)}`);
-    console.log(`Failed Job Reason = ${JSON.stringify(job.failedReason)}`);
+    if (job.failedReason) {
+        console.log(`Failed Job Reason = ${job.failedReason}`);
+    }
     console.log(`Job Count = ${job.attemptsMade} / ${job.opts.attempts}`);
 };
 
