@@ -38,34 +38,44 @@ export const onEventQueueHandler = async (): Promise<void> => {
      * @description
      * Register event listeners for each task in the event queue.
      */
-    await EventHandlerByDomain((EventQueue: Bull.Queue) => {
+    await EventHandlerByDomain(async (EventQueue: Bull.Queue) => {
         EventQueue.on("failed", async (job: Bull.Job) => {
-            printFailedJob(job);
+            console.log("==================================");
+            console.log("The operation failed.");
+            printJob(job);
+            console.log("==================================");
         });
 
         EventQueue.on("removed", async (job: Bull.Job) => {
-            console.log(`Removed Job ${job.id}`);
+            console.log("==================================");
+            console.log("The job has been deleted.");
+            printJob(job);
+            console.log("==================================");
         });
 
         EventQueue.on("completed", async (job: Bull.Job) => {
-            console.log(`Completed Job ${job.id}`);
+            console.log("==================================");
+            console.log("The operation has been completed.");
+            printJob(job);
+            console.log("==================================");
         });
     });
+};
 
-    const eventQueueHealthHandler = async (): Promise<void> => {
-        await EventHandlerByDomain(async (EventQueue: Bull.Queue) => {
-            const isPaused = await EventQueue.isPaused();
+const eventQueueHealthHandler = async (): Promise<void> => {
+    await EventHandlerByDomain(async (EventQueue: Bull.Queue) => {
+        const isPaused = await EventQueue.isPaused();
 
-            if (isPaused) {
-                console.log("EventQueue is Paused, So Resume Start");
-                const failedJobs = await getFailedJobs();
-                console.log(`These are the currently failed sync jobs.`);
-                failedJobs.forEach((failedJob: Bull.Job) => {
-                    printFailedJob(failedJob);
-                });
-                await EventQueue.resume();
-            }
-        });
-    };
+        if (isPaused) {
+            console.log("EventQueue is Paused, So Resume Start");
+            const failedJobs = await getFailedJobs();
+            console.log(`These are the currently failed sync jobs.`);
+            failedJobs.forEach((failedJob: Bull.Job) => {
+                printJob(failedJob);
+            });
+
+            await EventQueue.resume();
+        }
+    });
 };
 ```

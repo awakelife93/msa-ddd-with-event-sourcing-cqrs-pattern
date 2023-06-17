@@ -6,7 +6,7 @@ import { CudAction, EventHandleParams } from "../common/type";
 import {
     EventHandlerByDomain,
     generateEventParams,
-    printFailedJob,
+    printJob,
     printWorkJob
 } from "./helpers";
 
@@ -81,15 +81,24 @@ export const onEventQueueHandler = async (): Promise<void> => {
      */
     await EventHandlerByDomain(async (EventQueue: Bull.Queue) => {
         EventQueue.on("failed", async (job: Bull.Job) => {
-            printFailedJob(job);
+            console.log("==================================");
+            console.log("The operation failed.");
+            printJob(job);
+            console.log("==================================");
         });
 
         EventQueue.on("removed", async (job: Bull.Job) => {
-            console.log(`========= Removed Job ${job.id} =========`);
+            console.log("==================================");
+            console.log("The job has been deleted.");
+            printJob(job);
+            console.log("==================================");
         });
 
         EventQueue.on("completed", async (job: Bull.Job) => {
-            console.log(`========= Completed Job ID: ${job.id} =========`);
+            console.log("==================================");
+            console.log("The operation has been completed.");
+            printJob(job);
+            console.log("==================================");
         });
     });
 };
@@ -103,8 +112,9 @@ const eventQueueHealthHandler = async (): Promise<void> => {
             const failedJobs = await getFailedJobs();
             console.log(`These are the currently failed sync jobs.`);
             failedJobs.forEach((failedJob: Bull.Job) => {
-                printFailedJob(failedJob);
+                printJob(failedJob);
             });
+
             await EventQueue.resume();
         }
     });
@@ -119,7 +129,7 @@ const printFailedJobs = async (): Promise<void> => {
     const failedJobs = await getFailedJobs();
     console.log("========= Failed Jobs =========");
     failedJobs.forEach((failedJob) => {
-        printFailedJob(failedJob);
+        printJob(failedJob);
     });
     console.log("===============================");
 };

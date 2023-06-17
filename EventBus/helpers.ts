@@ -36,16 +36,12 @@ export const generateEventParams = (job: Bull.Job): EventHandleParams => {
     };
 };
 
-export const printFailedJob = (failedJob: Bull.Job) => {
-    console.log(`Failed Event Queue Name = ${failedJob.queue.name}`);
-    console.log(`Failed Job ID = ${failedJob.id}`);
-    console.log(`Failed Job Data = ${JSON.stringify(failedJob.data)}`);
-    console.log(
-        `Failed Job Reason = ${JSON.stringify(failedJob.failedReason)}`
-    );
-    console.log(
-        `Failed Job Count = ${failedJob.attemptsMade} / ${failedJob.opts.attempts}`
-    );
+export const printJob = (job: Bull.Job) => {
+    console.log(`Event Queue Name = ${job.queue.name}`);
+    console.log(`Job ID = ${job.id}`);
+    console.log(`Job Data = ${JSON.stringify(job.data)}`);
+    console.log(`Failed Job Reason = ${JSON.stringify(job.failedReason)}`);
+    console.log(`Job Count = ${job.attemptsMade} / ${job.opts.attempts}`);
 };
 
 export const printWorkJob = ({
