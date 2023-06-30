@@ -25,5 +25,6 @@ export enum ErrorStatusMessage {
     IS_EMPTY_EVENT_QUEUE = "Event Queue is Empty",
     IS_EMPTY_COLLECTION = "Collection is Empty",
     IS_EMPTY_DOCUMENT = "Document is Empty",
-    IS_NULL_REPOSITORY = "Repository is Empty"
+    IS_NULL_REPOSITORY = "Repository is Empty",
+    VALIDATE_DTO_ERROR = "DTO Validate Error"
 }

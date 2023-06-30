@@ -1,4 +1,9 @@
-import { CommonStatusCode, CommonStatusMessage } from "../../../common/status";
+import { getErrorItem } from "../../../common/error";
+import {
+    CommonStatusCode,
+    CommonStatusMessage,
+    ErrorStatusMessage
+} from "../../../common/status";
 
 export const validateDTO = <T>(
     dto: T,
@@ -10,24 +15,34 @@ export const validateDTO = <T>(
         skipFields: string[];
     }
 ): T => {
-    const status = errorItem?.status ?? CommonStatusCode.BAD_REQUEST;
-    const message = errorItem?.message ?? CommonStatusMessage.BAD_REQUEST;
+    try {
+        const dtoToObject = JSON.parse(JSON.stringify(dto));
+        const dtoFieldKeys = Object.keys(dtoToObject);
 
-    const dtoToObject = JSON.parse(JSON.stringify(dto));
-    const dtoFieldKeys = Object.keys(dtoToObject);
+        dtoFieldKeys
+            .filter((key: string) => !validateOptions?.skipFields.includes(key))
+            .forEach((dtoFieldKey: string) => {
+                const dtoFieldValue = dtoToObject[dtoFieldKey];
 
-    dtoFieldKeys
-        .filter((key: string) => !validateOptions?.skipFields.includes(key))
-        .forEach((dtoFieldKey: string) => {
-            const dtoFieldValue = dtoToObject[dtoFieldKey];
+                if (!dtoFieldValue) {
+                    const status =
+                        errorItem?.status ?? CommonStatusCode.BAD_REQUEST;
+                    const message =
+                        errorItem?.message ?? CommonStatusMessage.BAD_REQUEST;
 
-            if (!dtoFieldValue) {
-                throw {
-                    status,
-                    message
-                };
-            }
-        });
+                    throw {
+                        status,
+                        message
+                    };
+                }
+            });
 
-    return dto;
+        return dto;
+    } catch (error: unknown) {
+        const _error = getErrorItem(error);
+        throw {
+            status: CommonStatusCode.INTERNAL_SERVER_ERROR,
+            message: `${ErrorStatusMessage.VALIDATE_DTO_ERROR}: ${_error.message}`
+        };
+    }
 };
