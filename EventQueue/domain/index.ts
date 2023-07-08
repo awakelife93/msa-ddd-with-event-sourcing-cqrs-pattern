@@ -1,8 +1,8 @@
-import Domain from "../../Domain";
+import { getDomain } from "../../Domain";
 import PostEventQueues from "./Post/queue/Post";
 
 const eventQueuesByDomain = {
-    [Domain.POST]: PostEventQueues
+    [getDomain("POST")]: PostEventQueues
 };
 
 export default eventQueuesByDomain;

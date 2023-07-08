@@ -1,5 +1,5 @@
 import { Post } from "@prisma/client";
-import Domain from "../../../../../Domain";
+import { getDomain } from "../../../../../Domain";
 import { CudActionEnum } from "../../../../../common/enum";
 import {
     CommonStatusCode,
@@ -28,7 +28,7 @@ export const CreatePostService = async (
             });
         },
         {
-            domainName: Domain.POST,
+            domainName: getDomain("POST"),
             cudAction: CudActionEnum.CREATE
         }
     );
@@ -65,7 +65,7 @@ export const UpdatePostService = async (
             });
         },
         {
-            domainName: Domain.POST,
+            domainName: getDomain("POST"),
             cudAction: CudActionEnum.UPDATE
         }
     );
@@ -100,7 +100,7 @@ export const DeletePostService = async (post_id: number): Promise<Post> => {
             });
         },
         {
-            domainName: Domain.POST,
+            domainName: getDomain("POST"),
             cudAction: CudActionEnum.DELETE
         }
     );

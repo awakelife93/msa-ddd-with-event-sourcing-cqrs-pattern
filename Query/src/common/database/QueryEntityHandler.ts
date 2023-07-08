@@ -1,4 +1,4 @@
-import Domain from "../../../../Domain";
+import { getDomain } from "../../../../Domain";
 import { printWorkJob } from "../../../../EventBus/helpers";
 import { ErrorStatusMessage } from "../../../../common/status";
 import { CudAction, EventHandleParams } from "../../../../common/type";
@@ -11,7 +11,7 @@ const selectCollection = (
     domainName: string
 ): SelectCollectionModel | undefined => {
     return {
-        [Domain.POST]: PostModel
+        [getDomain("POST")]: PostModel
     }[domainName];
 };
 

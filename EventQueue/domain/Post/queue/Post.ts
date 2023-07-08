@@ -1,5 +1,5 @@
 import Bull from "bull";
-import Domain from "../../../../Domain";
+import { getDomain } from "../../../../Domain";
 import config from "../../../../config";
 import queueOptions from "./config";
 
@@ -9,13 +9,13 @@ import queueOptions from "./config";
  */
 const generateSingleQueue = () => {
     return {
-        CREATE: new Bull(`${Domain.POST}_CREATE_EVENT_QUEUE`, {
+        CREATE: new Bull(`${getDomain("POST")}_CREATE_EVENT_QUEUE`, {
             ...queueOptions.singleEventQueueOption
         }),
-        UPDATE: new Bull(`${Domain.POST}_UPDATE_EVENT_QUEUE`, {
+        UPDATE: new Bull(`${getDomain("POST")}_UPDATE_EVENT_QUEUE`, {
             ...queueOptions.singleEventQueueOption
         }),
-        DELETE: new Bull(`${Domain.POST}_DELETE_EVENT_QUEUE`, {
+        DELETE: new Bull(`${getDomain("POST")}_DELETE_EVENT_QUEUE`, {
             ...queueOptions.singleEventQueueOption
         })
     };
@@ -27,13 +27,13 @@ const generateSingleQueue = () => {
  */
 const generateMultiQueue = () => {
     return {
-        CREATE: new Bull(`${Domain.POST}_CREATE_EVENT_QUEUE`, {
+        CREATE: new Bull(`${getDomain("POST")}_CREATE_EVENT_QUEUE`, {
             ...queueOptions.multiEventQueueOption.CREATE
         }),
-        UPDATE: new Bull(`${Domain.POST}_UPDATE_EVENT_QUEUE`, {
+        UPDATE: new Bull(`${getDomain("POST")}_UPDATE_EVENT_QUEUE`, {
             ...queueOptions.multiEventQueueOption.UPDATE
         }),
-        DELETE: new Bull(`${Domain.POST}_DELETE_EVENT_QUEUE`, {
+        DELETE: new Bull(`${getDomain("POST")}_DELETE_EVENT_QUEUE`, {
             ...queueOptions.multiEventQueueOption.DELETE
         })
     };

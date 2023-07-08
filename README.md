@@ -248,7 +248,6 @@ CUD_ACTION: DELETE
 ```typescript
 // Sample Request Endpoint & Parameter
 // GET http://localhost:4000/post/3
-
 {
     "data": {
         "_id": "647ff22bfd8de16a991d886f",
@@ -266,9 +265,20 @@ CUD_ACTION: DELETE
 ### Example Domain
 
 ```typescript
-// Application Common Domain Object
-const Domain = {
-    POST: "Post"
+// Application Common Domain
+type DomainNames = "POST";
+
+const DomainMap = {
+    [Symbol.for("POST")]: "Post"
+};
+
+export const getDomain = (name: DomainNames): string => {
+    const domain = DomainMap[Symbol.for(name)];
+    if (!domain) {
+        throw new Error(ErrorStatusMessage.IS_NULL_DOMAIN);
+    }
+
+    return domain;
 };
 
 // Prisma
@@ -386,13 +396,13 @@ const queueOptions: {
  */
 const generateSingleQueue = () => {
     return {
-        CREATE: new Bull(`${Domain.POST}_CREATE_EVENT_QUEUE`, {
+        CREATE: new Bull(`${getDomain("POST")}_CREATE_EVENT_QUEUE`, {
             ...queueOptions.singleEventQueueOption
         }),
-        UPDATE: new Bull(`${Domain.POST}_UPDATE_EVENT_QUEUE`, {
+        UPDATE: new Bull(`${getDomain("POST")}_UPDATE_EVENT_QUEUE`, {
             ...queueOptions.singleEventQueueOption
         }),
-        DELETE: new Bull(`${Domain.POST}_DELETE_EVENT_QUEUE`, {
+        DELETE: new Bull(`${getDomain("POST")}_DELETE_EVENT_QUEUE`, {
             ...queueOptions.singleEventQueueOption
         })
     };
@@ -404,13 +414,13 @@ const generateSingleQueue = () => {
  */
 const generateMultiQueue = () => {
     return {
-        CREATE: new Bull(`${Domain.POST}_CREATE_EVENT_QUEUE`, {
+        CREATE: new Bull(`${getDomain("POST")}_CREATE_EVENT_QUEUE`, {
             ...queueOptions.multiEventQueueOption.CREATE
         }),
-        UPDATE: new Bull(`${Domain.POST}_UPDATE_EVENT_QUEUE`, {
+        UPDATE: new Bull(`${getDomain("POST")}_UPDATE_EVENT_QUEUE`, {
             ...queueOptions.multiEventQueueOption.UPDATE
         }),
-        DELETE: new Bull(`${Domain.POST}_DELETE_EVENT_QUEUE`, {
+        DELETE: new Bull(`${getDomain("POST")}_DELETE_EVENT_QUEUE`, {
             ...queueOptions.multiEventQueueOption.DELETE
         })
     };

@@ -84,7 +84,7 @@ export const CreatePostService = async (
             });
         },
         {
-            domainName: Domain.POST,
+            domainName: getDomain("POST"),
             cudAction: CudActionEnum.CREATE
         }
     );
