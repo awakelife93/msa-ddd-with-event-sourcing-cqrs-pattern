@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export interface IPost {
+    _id: ObjectId;
     post_id: number;
     created_at: Date;
     updated_at: Date;

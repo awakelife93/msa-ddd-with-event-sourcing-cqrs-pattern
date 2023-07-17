@@ -13,7 +13,7 @@ import GetPostResponseDTO from "../dtos/GetPostResponseDTO";
 export const GetPostByIdService = async (
     post_id: number
 ): Promise<GetPostByIdResponseDTO> => {
-    const post = await PostModel.findOne({ post_id });
+    const post = await PostModel.findOne({ post_id }).lean().exec();
 
     if (!post) {
         throw {
@@ -22,7 +22,8 @@ export const GetPostByIdService = async (
         };
     }
 
-    return new GetPostByIdResponseDTO(post.toObject());
+    console.log("==========>");
+    return new GetPostByIdResponseDTO(post);
 };
 
 export const GetPostService = async (
@@ -39,7 +40,9 @@ export const GetPostService = async (
 
     const post = await PostModel.findOne({
         $or: queries
-    });
+    })
+        .lean()
+        .exec();
 
     if (!post) {
         throw {
@@ -48,7 +51,7 @@ export const GetPostService = async (
         };
     }
 
-    return new GetPostResponseDTO(post.toObject());
+    return new GetPostResponseDTO(post);
 };
 
 export const GetAllPostService = async (
@@ -65,9 +68,11 @@ export const GetAllPostService = async (
 
     const posts = await PostModel.find({
         $or: queries
-    });
+    })
+        .lean()
+        .exec();
 
     return posts.map((post) => {
-        return new GetPostResponseDTO(post.toObject());
+        return new GetPostResponseDTO(post);
     });
 };
