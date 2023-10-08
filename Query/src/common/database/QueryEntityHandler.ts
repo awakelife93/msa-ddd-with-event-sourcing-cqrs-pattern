@@ -8,7 +8,7 @@ import { excludeFieldsHelper } from "../../utils/generate-query";
 type SelectCollectionModel = typeof PostModel;
 
 const selectCollection = (
-  domainName: string
+  domainName: string,
 ): SelectCollectionModel | undefined => {
   return {
     [getDomain("POST")]: PostModel,
@@ -30,7 +30,7 @@ const selectCudAction = (cudAction: CUDAction) => {
         {
           ...excludeFieldsHelper(entity, ["created_at"]),
           updated_at: new Date(),
-        }
+        },
       );
     },
     DELETE: async (Collection: SelectCollectionModel, entity: any) => {
@@ -39,7 +39,7 @@ const selectCudAction = (cudAction: CUDAction) => {
         {
           ...excludeFieldsHelper(entity, ["created_at"]),
           updated_at: new Date(),
-        }
+        },
       );
     },
   };

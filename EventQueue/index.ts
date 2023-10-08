@@ -21,7 +21,7 @@ export const getEventQueuesByDomain = () => {
  */
 export const selectEventQueue = (
   domainName: string,
-  cudAction: CUDAction
+  cudAction: CUDAction,
 ): Bull.Queue => {
   const eventQueuesByDomain = getEventQueuesByDomain();
 
@@ -40,7 +40,7 @@ export const selectEventQueue = (
  */
 export const validateRedisConnection = async (): Promise<void> => {
   console.log(
-    `Connect Redis redis://${config.POST_DOMAIN_QUEUE_HOST}:${config.POST_DOMAIN_QUEUE_PORT}`
+    `Connect Redis redis://${config.POST_DOMAIN_QUEUE_HOST}:${config.POST_DOMAIN_QUEUE_PORT}`,
   );
   const redisClient: redis.RedisClientType = redis.createClient({
     url: `redis://${config.POST_DOMAIN_QUEUE_HOST}:${config.POST_DOMAIN_QUEUE_PORT}`,

@@ -5,27 +5,27 @@ import { validateRedisConnection } from "./EventQueue";
 import startQueryServerApplication from "./Query/src";
 
 const initialization = async (): Promise<void> => {
-    try {
-        await validateRedisConnection();
+  try {
+    await validateRedisConnection();
 
-        await startCommandServerApplication();
+    await startCommandServerApplication();
 
-        await startQueryServerApplication();
+    await startQueryServerApplication();
 
-        EventBus.onEventQueueHandler();
+    EventBus.onEventQueueHandler();
 
-        EventBus.subscriber();
+    EventBus.subscriber();
 
-        EventBus.printFailedJobs();
+    EventBus.printFailedJobs();
 
-        // Only Test cleanup Method
-        // EventBus.removeFailedJob({
-        //     cleanupFailures: true
-        // });
-    } catch (error: unknown) {
-        const _error = getErrorItem(error);
-        console.log(`Process Error ${_error.message}`);
-    }
+    // Only Test cleanup Method
+    // EventBus.removeFailedJob({
+    //     cleanupFailures: true
+    // });
+  } catch (error: unknown) {
+    const _error = getErrorItem(error);
+    console.log(`Process Error ${_error.message}`);
+  }
 };
 
 initialization();

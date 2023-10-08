@@ -5,16 +5,12 @@ import routes from "./common/routes/routes";
 import { connection } from "./database";
 
 const startCommandServerApplication = async (): Promise<void> => {
-    const application = createExpressApplication();
+  const application = createExpressApplication();
 
-    await connection();
-    await createRoute(application, routes);
-    await createServer(
-        application,
-        "CommandServer",
-        config.COMMAND_SERVER_PORT
-    );
-    console.log("Start Command Server");
+  await connection();
+  await createRoute(application, routes);
+  await createServer(application, "CommandServer", config.COMMAND_SERVER_PORT);
+  console.log("Start Command Server");
 };
 
 export default startCommandServerApplication;

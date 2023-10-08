@@ -9,8 +9,8 @@ This project is based on the MSA + DDD architecture + Event Sourcing + CQRS patt
 
 ### Getting Started
 
--   npm install
--   npm start
+- npm install
+- npm start
 
 ### Environment
 
@@ -48,18 +48,18 @@ This project is based on the MSA + DDD architecture + Event Sourcing + CQRS patt
 
 ### Project Guide
 
--   [Command](Command/README.md)
-    -   Command (CUD) Server
--   [Query](Query/README.md)
-    -   Query (R) Server
--   [EventBus](EventBus/README.md)
-    -   Handles the Command -> EventQueue -> Query structure.
--   [EventQueue](EventQueue/README.md)
-    -   Event queue configured based on MSA + DDD
--   [config](.env.example) / [.env](.env.example)
-    -   Manage Database, Event Queue connection information.
--   [Domain](Domain.ts)
-    -   This Project Application Common Domain Object
+- [Command](Command/README.md)
+  - Command (CUD) Server
+- [Query](Query/README.md)
+  - Query (R) Server
+- [EventBus](EventBus/README.md)
+  - Handles the Command -> EventQueue -> Query structure.
+- [EventQueue](EventQueue/README.md)
+  - Event queue configured based on MSA + DDD
+- [config](.env.example) / [.env](.env.example)
+  - Manage Database, Event Queue connection information.
+- [Domain](Domain.ts)
+  - This Project Application Common Domain Object
 
 ### `Process & Outputs`
 
@@ -333,9 +333,9 @@ const PostSchema = new mongoose.Schema<IPost>({
 ```typescript
 type SingleEventQueueOption = Bull.QueueOptions;
 type MultiEventQueueOption = {
-    CREATE: SingleEventQueueOption;
-    UPDATE: SingleEventQueueOption;
-    DELETE: SingleEventQueueOption;
+  CREATE: SingleEventQueueOption;
+  UPDATE: SingleEventQueueOption;
+  DELETE: SingleEventQueueOption;
 };
 
 /**
@@ -344,51 +344,51 @@ type MultiEventQueueOption = {
  * multiEventQueueOption = If you are isolating Redis for each C, U, D operation
  */
 const queueOptions: {
-    singleEventQueueOption: SingleEventQueueOption;
-    multiEventQueueOption: MultiEventQueueOption;
+  singleEventQueueOption: SingleEventQueueOption;
+  multiEventQueueOption: MultiEventQueueOption;
 } = {
-    singleEventQueueOption: {
-        redis: {
-            ...defaultRedisOptions,
-            port: Number(config.POST_DOMAIN_QUEUE_PORT),
-            host: config.POST_DOMAIN_QUEUE_HOST
-        },
-        defaultJobOptions: {
-            ...defaultJobOptions
-        }
+  singleEventQueueOption: {
+    redis: {
+      ...defaultRedisOptions,
+      port: Number(config.POST_DOMAIN_QUEUE_PORT),
+      host: config.POST_DOMAIN_QUEUE_HOST,
     },
-    multiEventQueueOption: {
-        CREATE: {
-            redis: {
-                ...defaultRedisOptions,
-                port: Number(config.POST_DOMAIN_QUEUE_PORT),
-                host: config.POST_DOMAIN_QUEUE_HOST
-            },
-            defaultJobOptions: {
-                ...defaultJobOptions
-            }
-        },
-        UPDATE: {
-            redis: {
-                ...defaultRedisOptions,
-                port: Number(config.POST_DOMAIN_QUEUE_PORT),
-                host: config.POST_DOMAIN_QUEUE_HOST
-            },
-            defaultJobOptions: {
-                ...defaultJobOptions
-            }
-        },
-        DELETE: {
-            redis: {
-                ...defaultRedisOptions,
-                port: Number(config.POST_DOMAIN_QUEUE_PORT),
-                host: config.POST_DOMAIN_QUEUE_HOST
-            },
-            defaultJobOptions: {
-                ...defaultJobOptions
-            }
-        }
-    }
+    defaultJobOptions: {
+      ...defaultJobOptions,
+    },
+  },
+  multiEventQueueOption: {
+    CREATE: {
+      redis: {
+        ...defaultRedisOptions,
+        port: Number(config.POST_DOMAIN_QUEUE_PORT),
+        host: config.POST_DOMAIN_QUEUE_HOST,
+      },
+      defaultJobOptions: {
+        ...defaultJobOptions,
+      },
+    },
+    UPDATE: {
+      redis: {
+        ...defaultRedisOptions,
+        port: Number(config.POST_DOMAIN_QUEUE_PORT),
+        host: config.POST_DOMAIN_QUEUE_HOST,
+      },
+      defaultJobOptions: {
+        ...defaultJobOptions,
+      },
+    },
+    DELETE: {
+      redis: {
+        ...defaultRedisOptions,
+        port: Number(config.POST_DOMAIN_QUEUE_PORT),
+        host: config.POST_DOMAIN_QUEUE_HOST,
+      },
+      defaultJobOptions: {
+        ...defaultJobOptions,
+      },
+    },
+  },
 };
 
 /**
@@ -396,17 +396,17 @@ const queueOptions: {
  * C, U, and D queues are placed in one Redis.
  */
 const generateSingleQueue = () => {
-    return {
-        CREATE: new Bull(`${getDomain("POST")}_CREATE_EVENT_QUEUE`, {
-            ...queueOptions.singleEventQueueOption
-        }),
-        UPDATE: new Bull(`${getDomain("POST")}_UPDATE_EVENT_QUEUE`, {
-            ...queueOptions.singleEventQueueOption
-        }),
-        DELETE: new Bull(`${getDomain("POST")}_DELETE_EVENT_QUEUE`, {
-            ...queueOptions.singleEventQueueOption
-        })
-    };
+  return {
+    CREATE: new Bull(`${getDomain("POST")}_CREATE_EVENT_QUEUE`, {
+      ...queueOptions.singleEventQueueOption,
+    }),
+    UPDATE: new Bull(`${getDomain("POST")}_UPDATE_EVENT_QUEUE`, {
+      ...queueOptions.singleEventQueueOption,
+    }),
+    DELETE: new Bull(`${getDomain("POST")}_DELETE_EVENT_QUEUE`, {
+      ...queueOptions.singleEventQueueOption,
+    }),
+  };
 };
 
 /**
@@ -414,22 +414,22 @@ const generateSingleQueue = () => {
  * C, U, and D queues are placed on each Redis.
  */
 const generateMultiQueue = () => {
-    return {
-        CREATE: new Bull(`${getDomain("POST")}_CREATE_EVENT_QUEUE`, {
-            ...queueOptions.multiEventQueueOption.CREATE
-        }),
-        UPDATE: new Bull(`${getDomain("POST")}_UPDATE_EVENT_QUEUE`, {
-            ...queueOptions.multiEventQueueOption.UPDATE
-        }),
-        DELETE: new Bull(`${getDomain("POST")}_DELETE_EVENT_QUEUE`, {
-            ...queueOptions.multiEventQueueOption.DELETE
-        })
-    };
+  return {
+    CREATE: new Bull(`${getDomain("POST")}_CREATE_EVENT_QUEUE`, {
+      ...queueOptions.multiEventQueueOption.CREATE,
+    }),
+    UPDATE: new Bull(`${getDomain("POST")}_UPDATE_EVENT_QUEUE`, {
+      ...queueOptions.multiEventQueueOption.UPDATE,
+    }),
+    DELETE: new Bull(`${getDomain("POST")}_DELETE_EVENT_QUEUE`, {
+      ...queueOptions.multiEventQueueOption.DELETE,
+    }),
+  };
 };
 
 const PostEventQueues = config.IS_SINGLE_QUEUE
-    ? generateSingleQueue()
-    : generateMultiQueue();
+  ? generateSingleQueue()
+  : generateMultiQueue();
 
 export default PostEventQueues;
 ```
@@ -446,27 +446,27 @@ export default PostEventQueues;
  * The function basically checks whether the host and port are connectable, and if there is a problem, the port should be checked well.
  */
 export const validateRedisConnection = async (): Promise<void> => {
-    const redisClient: redis.RedisClientType = redis.createClient({
-        url: `redis://${config.POST_DOMAIN_QUEUE_HOST}:${config.POST_DOMAIN_QUEUE_PORT}`
-    });
+  const redisClient: redis.RedisClientType = redis.createClient({
+    url: `redis://${config.POST_DOMAIN_QUEUE_HOST}:${config.POST_DOMAIN_QUEUE_PORT}`,
+  });
 
-    await redisClient.connect();
+  await redisClient.connect();
 
-    const isReady = redisClient.isReady;
-    const isOpen = redisClient.isOpen;
+  const isReady = redisClient.isReady;
+  const isOpen = redisClient.isOpen;
 
-    console.log(`Redis Status: isReady=${isReady}, isOpen=${isOpen}`);
-    await redisClient.disconnect();
+  console.log(`Redis Status: isReady=${isReady}, isOpen=${isOpen}`);
+  await redisClient.disconnect();
 };
 ```
 
 ##### Example
 
--   `try connect url "redis://localhost:27017"`
--   Output
-    -   `Connect Redis redis://localhost:27017`
-    -   `Redis Status: isReady=true, isOpen=true`
--   **No error occurs...**
+- `try connect url "redis://localhost:27017"`
+- Output
+  - `Connect Redis redis://localhost:27017`
+  - `Redis Status: isReady=true, isOpen=true`
+- **No error occurs...**
 
 ### Author
 

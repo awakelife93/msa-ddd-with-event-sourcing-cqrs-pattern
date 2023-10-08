@@ -1,11 +1,11 @@
 export enum EventHandleParamEnum {
-    DOMAIN_NAME = "domainName",
-    ACTION_TYPE = "cudAction",
-    ENTITY = "entity"
+  DOMAIN_NAME = "domainName",
+  ACTION_TYPE = "cudAction",
+  ENTITY = "entity",
 }
 
 export enum CudActionEnum {
-    CREATE = "CREATE",
-    UPDATE = "UPDATE",
-    DELETE = "DELETE"
+  CREATE = "CREATE",
+  UPDATE = "UPDATE",
+  DELETE = "DELETE",
 }

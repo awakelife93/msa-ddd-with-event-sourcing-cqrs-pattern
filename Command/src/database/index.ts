@@ -9,10 +9,10 @@ const client = new PrismaClient();
  * but there is a function created during the compilation phase to proactively check if the connection has failed.
  */
 export const connection = async (): Promise<void> => {
-    await client.$connect();
-    console.log(
-        `Connect Command Server Database ${config.COMMAND_SERVER_DATABASE_URL}`
-    );
+  await client.$connect();
+  console.log(
+    `Connect Command Server Database ${config.COMMAND_SERVER_DATABASE_URL}`,
+  );
 };
 
 export default client;

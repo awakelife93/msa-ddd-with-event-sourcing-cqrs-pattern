@@ -30,7 +30,7 @@ const publisher = async ({
       cudAction,
       entity,
     },
-    { attempts: 3 }
+    { attempts: 3 },
   );
   console.log("============== EventBus Publisher Work End ==============");
 };
@@ -42,7 +42,7 @@ const subscriber = async (): Promise<void> => {
         const { domainName, entity, cudAction } = generateEventParams(job);
 
         console.log(
-          "============== EventBus SubScriber Work Start =============="
+          "============== EventBus SubScriber Work Start ==============",
         );
         printWorkJob({
           domainName,
@@ -57,7 +57,7 @@ const subscriber = async (): Promise<void> => {
         });
         await done();
         console.log(
-          "============== EventBus SubScriber Work End =============="
+          "============== EventBus SubScriber Work End ==============",
         );
       } catch (error: unknown) {
         const _error = getErrorItem(error);
@@ -147,7 +147,7 @@ const rePublisher = async (job: Bull.Job): Promise<void> => {
 
 const pauseQueue = async (
   domainName: string,
-  cudAction: CUDAction
+  cudAction: CUDAction,
 ): Promise<void> => {
   const eventQueuesByDomain = selectEventQueue(domainName, cudAction);
   await eventQueuesByDomain.pause();

@@ -1,60 +1,60 @@
 {
-    "name": "msa-ddd-with-event-sourcing-cqrs-pattern",
-    "private": true,
-    "version": "1.0.0",
-    "description": "This project is based on the MSA + DDD architecture + Event Sourcing + CQRS pattern.",
-    "scripts": {
-        "start": "ts-node ./index.ts"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/awakelife93/msa-ddd-with-event-sourcing-cqrs-pattern.git"
-    },
-    "bugs": {
-        "url": "https://github.com/awakelife93/msa-ddd-with-event-sourcing-cqrs-pattern/issues"
-    },
-    "homepage": "https://github.com/awakelife93/msa-ddd-with-event-sourcing-cqrs-pattern#readme",
-    "keywords": [
-        "nodejs",
-        "node",
-        "express",
-        "msa",
-        "microservices",
-        "ddd",
-        "Domain Driven Design",
-        "cqrs",
-        "cqrs pattern",
-        "eventsourcing",
-        "event-sourcing",
-        "event sourcing",
-        "event sourcing pattern",
-        "prisma",
-        "mongoose",
-        "redis",
-        "architecture"
-    ],
-    "author": "HyunwooPark",
-    "license": "MIT",
-    "dependencies": {
-        "@prisma/client": "^4.14.1",
-        "@types/helmet": "^4.0.0",
-        "bull": "^4.10.4",
-        "cors": "^2.8.5",
-        "dotenv": "^16.0.3",
-        "express": "^4.18.2",
-        "helmet": "^7.0.0",
-        "mongoose": "^7.2.1",
-        "path": "^0.12.7",
-        "prisma": "^4.14.1",
-        "redis": "^4.6.6"
-    },
-    "devDependencies": {
-        "@types/bull": "^4.10.0",
-        "@types/cors": "^2.8.13",
-        "@types/dotenv": "^8.2.0",
-        "@types/express": "^4.17.17",
-        "@types/redis": "^4.0.11",
-        "ts-node": "^10.9.1",
-        "typescript": "^5.0.4"
-    }
+  "name": "msa-ddd-with-event-sourcing-cqrs-pattern",
+  "private": true,
+  "version": "1.0.0",
+  "description": "This project is based on the MSA + DDD architecture + Event Sourcing + CQRS pattern.",
+  "scripts": {
+    "start": "ts-node ./index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awakelife93/msa-ddd-with-event-sourcing-cqrs-pattern.git"
+  },
+  "bugs": {
+    "url": "https://github.com/awakelife93/msa-ddd-with-event-sourcing-cqrs-pattern/issues"
+  },
+  "homepage": "https://github.com/awakelife93/msa-ddd-with-event-sourcing-cqrs-pattern#readme",
+  "keywords": [
+    "nodejs",
+    "node",
+    "express",
+    "msa",
+    "microservices",
+    "ddd",
+    "Domain Driven Design",
+    "cqrs",
+    "cqrs pattern",
+    "eventsourcing",
+    "event-sourcing",
+    "event sourcing",
+    "event sourcing pattern",
+    "prisma",
+    "mongoose",
+    "redis",
+    "architecture"
+  ],
+  "author": "HyunwooPark",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^4.14.1",
+    "@types/helmet": "^4.0.0",
+    "bull": "^4.10.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "mongoose": "^7.2.1",
+    "path": "^0.12.7",
+    "prisma": "^4.14.1",
+    "redis": "^4.6.6"
+  },
+  "devDependencies": {
+    "@types/bull": "^4.10.0",
+    "@types/cors": "^2.8.13",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.17",
+    "@types/redis": "^4.0.11",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
 }

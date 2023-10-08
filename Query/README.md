@@ -57,13 +57,13 @@ const selectCudAction = (cudAction: CUDAction) => {
     UPDATE: async (Collection: SelectCollectionModel, entity: any) => {
       await Collection.updateOne(
         { post_id: entity.post_id },
-        { ...excludeDateField(entity), updated_at: new Date() }
+        { ...excludeDateField(entity), updated_at: new Date() },
       );
     },
     DELETE: async (Collection: SelectCollectionModel, entity: any) => {
       await Collection.updateOne(
         { post_id: entity.post_id },
-        { ...excludeDateField(entity), updated_at: new Date() }
+        { ...excludeDateField(entity), updated_at: new Date() },
       );
     },
   };
