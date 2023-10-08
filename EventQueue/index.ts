@@ -1,7 +1,7 @@
 import Bull from "bull";
 import * as redis from "redis";
 import { ErrorStatusMessage } from "../common/status";
-import { CudAction } from "../common/type";
+import { CUDAction } from "../common/type";
 import config from "../config";
 import eventQueuesByDomain from "./domain";
 
@@ -12,7 +12,7 @@ import eventQueuesByDomain from "./domain";
  * Redis may be additionally configured as CREATE, UPDATE, and DELETE depending on traffic.
  */
 export const getEventQueuesByDomain = () => {
-    return eventQueuesByDomain;
+  return eventQueuesByDomain;
 };
 
 /**
@@ -20,16 +20,16 @@ export const getEventQueuesByDomain = () => {
  * Picks a specific event queue from all domain-specific Create, Update, Delete event queues.
  */
 export const selectEventQueue = (
-    domainName: string,
-    cudAction: CudAction
+  domainName: string,
+  cudAction: CUDAction
 ): Bull.Queue => {
-    const eventQueuesByDomain = getEventQueuesByDomain();
+  const eventQueuesByDomain = getEventQueuesByDomain();
 
-    const eventQueue = eventQueuesByDomain[domainName]?.[cudAction];
+  const eventQueue = eventQueuesByDomain[domainName]?.[cudAction];
 
-    if (!eventQueue) throw new Error(ErrorStatusMessage.IS_EMPTY_EVENT_QUEUE);
+  if (!eventQueue) throw new Error(ErrorStatusMessage.IS_EMPTY_EVENT_QUEUE);
 
-    return eventQueue;
+  return eventQueue;
 };
 
 /**
@@ -39,18 +39,18 @@ export const selectEventQueue = (
  * The function basically checks whether the host and port are connectable, and if there is a problem, the port should be checked well.
  */
 export const validateRedisConnection = async (): Promise<void> => {
-    console.log(
-        `Connect Redis redis://${config.POST_DOMAIN_QUEUE_HOST}:${config.POST_DOMAIN_QUEUE_PORT}`
-    );
-    const redisClient: redis.RedisClientType = redis.createClient({
-        url: `redis://${config.POST_DOMAIN_QUEUE_HOST}:${config.POST_DOMAIN_QUEUE_PORT}`
-    });
+  console.log(
+    `Connect Redis redis://${config.POST_DOMAIN_QUEUE_HOST}:${config.POST_DOMAIN_QUEUE_PORT}`
+  );
+  const redisClient: redis.RedisClientType = redis.createClient({
+    url: `redis://${config.POST_DOMAIN_QUEUE_HOST}:${config.POST_DOMAIN_QUEUE_PORT}`,
+  });
 
-    await redisClient.connect();
+  await redisClient.connect();
 
-    const isReady = redisClient.isReady;
-    const isOpen = redisClient.isOpen;
+  const isReady = redisClient.isReady;
+  const isOpen = redisClient.isOpen;
 
-    console.log(`Redis Status: isReady=${isReady}, isOpen=${isOpen}`);
-    await redisClient.disconnect();
+  console.log(`Redis Status: isReady=${isReady}, isOpen=${isOpen}`);
+  await redisClient.disconnect();
 };
