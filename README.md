@@ -1,8 +1,4 @@
-# Welcome :wave:
-
-## msa-ddd-with-event-sourcing-cqrs-pattern
-
-### Example Microservice + DDD + Event Sourcing + CQRS pattern :smiley:
+### Example Microservice + DDD + Event Sourcing + CQRS Design pattern
 
 This project is based on the MSA + DDD architecture + Event Sourcing + CQRS pattern.\
 `The RDBMS used in the example is MySQL, and NoSQL is MongoDB. And Redis is used as the message queue (MQ). Depending on the situation, you can choose various RDBMS and attach a search-optimized DB (e.g., ELK, Neo4j...) to the query server.`
